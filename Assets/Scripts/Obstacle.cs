@@ -9,7 +9,7 @@ public class Obstacle : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            // other.gameObject.GetComponent<Driver>().Die();
+            // TODO: quitar un item del inventario
         }
     }
 }
