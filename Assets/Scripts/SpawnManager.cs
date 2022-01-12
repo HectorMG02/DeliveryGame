@@ -2,15 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] GameObject itemPrefab;
-    [SerializeField] GameObject[] powerups;
+    [SerializeField] GameObject[] powerUps;
+
+    [SerializeField] private Sprite[] iconImages;
 
     [SerializeField] private GameObject deliverPoint;
- 
+    [SerializeField] private GameObject deliverAvailableText;
 
     private void Start()
     {
@@ -20,6 +23,10 @@ public class SpawnManager : MonoBehaviour
 
     public void SpawnItem()
     { 
+        
+        int randomImage = Random.Range(0, iconImages.Length);
+        itemPrefab.GetComponent<SpriteRenderer>().sprite = iconImages[randomImage];
+        
         Vector3 itemPosition = new Vector3(Random.Range(-30f, 30f), 30f, 0);
          
         Collider2D[] colliders = Physics2D.OverlapCircleAll(itemPosition, 1.0f);
@@ -39,10 +46,12 @@ public class SpawnManager : MonoBehaviour
     public void HideDeliverPoint()
     {
         deliverPoint.SetActive(false);
+        deliverAvailableText.SetActive(false);
     }
     
     public void SpawnDeliverPoint()
     {
         deliverPoint.SetActive(true);
+        deliverAvailableText.SetActive(true);
     }
 }

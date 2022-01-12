@@ -5,11 +5,19 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
+    Driver driver;
+
+    private void Start()
+    {
+        driver = FindObjectOfType<Driver>();
+    }
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            // TODO: quitar un item del inventario
+            driver.itemsCount--;
+            driver.UpdateItemsText();
         }
     }
 }

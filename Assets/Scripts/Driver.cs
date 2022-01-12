@@ -2,21 +2,32 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class Driver : MonoBehaviour
 {
     [SerializeField] private float steerSpeed = 300f;
     [SerializeField] private float moveSpeed = 20f;
 
-    int totalCount = 0;
-    int itemsCount = 0;
+    public int totalCount = 0;
+    public int itemsCount = 0;
     [SerializeField] SpawnManager spawnManager;
 
+    [SerializeField] private Text totalText;
+    [SerializeField] private Text itemsText;
+  
 
 
     private void Update()
     {
         Movement();
+        
+        if (itemsCount <= 0)
+        {
+            itemsCount = 0;
+            UpdateItemsText();
+        }
     }
 
 
@@ -25,9 +36,10 @@ public class Driver : MonoBehaviour
         if (other.gameObject.tag == "Item")
         {
             itemsCount += 1;
+            UpdateItemsText();
             Destroy(other.gameObject);
 
-            if (itemsCount >= 3)
+            if (itemsCount >= Random.Range(1, 5))
             {
                 spawnManager.SpawnDeliverPoint();
             }
@@ -50,7 +62,9 @@ public class Driver : MonoBehaviour
     void Movement()
     {
         float steerAmount = Input.GetAxis("Horizontal") * steerSpeed * Time.deltaTime;
-        float moveAmount = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
+        float moveAmount;
+        
+        moveAmount = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
 
         transform.Rotate(0, 0, -steerAmount);
         transform.Translate(0, moveAmount, 0);
@@ -62,11 +76,22 @@ public class Driver : MonoBehaviour
         totalCount += itemsCount;
         itemsCount = 0;
         
+        UpdateTotalText();
+        UpdateItemsText();
+        
         spawnManager.HideDeliverPoint();
         spawnManager.SpawnItem();
     }
 
 
+    public void UpdateTotalText()
+    {
+        totalText.text = "Objetos entregados: " + totalCount.ToString();
+    }
+    public void UpdateItemsText()
+    {
+        itemsText.text = "Objetos recogidos: " + itemsCount.ToString();
+    }
 
 }
 
