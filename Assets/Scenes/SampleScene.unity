@@ -3799,7 +3799,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1081917355
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5003,7 +5003,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   steerSpeed: 300
-  moveSpeed: 20
+  baseSpeed: 20
+  boostSpeed: 35
   totalCount: 0
   itemsCount: 0
   spawnManager: {fileID: 1632851751}
@@ -5039,7 +5040,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPrefab: {fileID: 3579348352441968949, guid: e948cccdd9187f74ead75e27de52dd11, type: 3}
-  powerUps: []
+  powerUpPrefab: {fileID: 3409451737475638748, guid: c05f3b87ad0075241a012302f244a086, type: 3}
   iconImages:
   - {fileID: -7336395934759168116, guid: 50e3529dac5fedd43a42a985cc1b0784, type: 3}
   - {fileID: -2850013445083595758, guid: 50e3529dac5fedd43a42a985cc1b0784, type: 3}

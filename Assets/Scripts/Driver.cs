@@ -8,7 +8,10 @@ using Random = UnityEngine.Random;
 public class Driver : MonoBehaviour
 {
     [SerializeField] private float steerSpeed = 300f;
-    [SerializeField] private float moveSpeed = 20f;
+    [SerializeField] private float baseSpeed = 20f;
+    [SerializeField] private float boostSpeed = 35f;
+
+    private float moveSpeed;
 
     public int totalCount = 0;
     public int itemsCount = 0;
@@ -16,13 +19,17 @@ public class Driver : MonoBehaviour
 
     [SerializeField] private Text totalText;
     [SerializeField] private Text itemsText;
-  
 
+    private void Start()
+    {
+        
+        moveSpeed = baseSpeed;
+    }
 
     private void Update()
     {
         Movement();
-        
+
         if (itemsCount <= 0)
         {
             itemsCount = 0;
@@ -47,7 +54,7 @@ public class Driver : MonoBehaviour
             {
                 spawnManager.SpawnItem();
             }
-        } 
+        }
     }
 
 
@@ -57,13 +64,18 @@ public class Driver : MonoBehaviour
         {
             Delivered();
         }
+        else if (other.gameObject.tag == "PowerUp")
+        {
+            Destroy(other.gameObject);
+            StartCoroutine(Boost());
+        }
     }
 
     void Movement()
     {
         float steerAmount = Input.GetAxis("Horizontal") * steerSpeed * Time.deltaTime;
         float moveAmount;
-        
+
         moveAmount = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
 
         transform.Rotate(0, 0, -steerAmount);
@@ -75,10 +87,10 @@ public class Driver : MonoBehaviour
     {
         totalCount += itemsCount;
         itemsCount = 0;
-        
+
         UpdateTotalText();
         UpdateItemsText();
-        
+
         spawnManager.HideDeliverPoint();
         spawnManager.SpawnItem();
     }
@@ -88,12 +100,23 @@ public class Driver : MonoBehaviour
     {
         totalText.text = "Objetos entregados: " + totalCount.ToString();
     }
+
     public void UpdateItemsText()
     {
         itemsText.text = "Objetos recogidos: " + itemsCount.ToString();
     }
 
+
+    IEnumerator Boost()
+    {
+        moveSpeed = boostSpeed;
+        yield return new WaitForSeconds(5);
+        moveSpeed = baseSpeed;
+        yield return new WaitForSeconds(3);
+        spawnManager.SpawnPowerUp();
+    }
+
 }
 
 
-  
+   
